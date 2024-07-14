@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Defines the HBNB console."""
 import cmd
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -20,15 +21,11 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Parses command input to handle dot notation."""
-        if '.' in line and '(' in line and ')' in line:
-            try:
-                cls, rest = line.split('.', 1)
-                cmd, args = rest.split('(', 1)
-                args = args.strip(')')
-                if cmd == "all":
-                    return f"do_all {cls}"
-            except ValueError:
-                pass
+        match = re.match(r"(\w+)\.(\w+)\((.*)\)", line)
+        if match:
+            cls_name, command, args = match.groups()
+            if command == "all":
+                return f"do_all {cls_name}"
         return line
 
     def do_create(self, arg):
