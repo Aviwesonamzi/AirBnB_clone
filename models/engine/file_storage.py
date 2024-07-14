@@ -3,8 +3,10 @@
 Module for FileStorage class
 """
 
-import json
+# models/engine/file_storage.py
+
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -30,10 +32,14 @@ class FileStorage:
     def reload(self):
         """Deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, 'r') as f:
-                json_objects = json.load(f)
-                for k, v in json_objects.items():
-                    cls_name = v['__class__']
-                    self.__objects[k] = eval(cls_name)(**v)
+            with open(self.__file_path, "r") as f:
+                obj_dict = json.load(f)
+                for key, value in obj_dict.items():
+                    cls_name = value["__class__"]
+                    if cls_name == "BaseModel":
+                        self.__objects[key] = BaseModel(**value)
+                    elif cls_name == "User":
+                        self.__objects[key] = User(**value)
+                    # Add other classes as needed...
         except FileNotFoundError:
             pass
