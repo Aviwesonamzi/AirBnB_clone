@@ -26,6 +26,8 @@ class HBNBCommand(cmd.Cmd):
             cls_name, command, args = match.groups()
             if command == "all":
                 return f"do_all {cls_name}"
+            elif command == "count":
+                return f"do_count {cls_name}"
         return line
 
     def do_create(self, arg):
@@ -88,6 +90,17 @@ class HBNBCommand(cmd.Cmd):
             if not arg or obj.__class__.__name__ == arg
         ]
         print(instances)
+
+    def do_count(self, arg):
+        """Retrieves the number of instances of a class."""
+        if not arg:
+            print("** class name missing **")
+            return
+        if arg not in self.classes:
+            print("** class doesn't exist **")
+            return
+        count = sum(1 for obj in storage.all().values() if obj.__class__.__name__ == arg)
+        print(count)
 
     def do_update(self, arg):
         """Updates an instance."""
