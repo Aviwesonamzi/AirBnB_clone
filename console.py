@@ -18,6 +18,19 @@ class HBNBCommand(cmd.Cmd):
         'City': City, 'Amenity': Amenity, 'Place': Place, 'Review': Review
     }
 
+    def precmd(self, line):
+        """Parses command input to handle dot notation."""
+        if '.' in line and '(' in line and ')' in line:
+            try:
+                cls, rest = line.split('.', 1)
+                cmd, args = rest.split('(', 1)
+                args = args.strip(')')
+                if cmd == "all":
+                    return f"do_all {cls}"
+            except ValueError:
+                pass
+        return line
+
     def do_create(self, arg):
         """Creates a new instance of a class."""
         if not arg:
