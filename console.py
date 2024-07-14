@@ -8,7 +8,10 @@ from models import storage
 # Add other necessary imports...
 
 class HBNBCommand(cmd.Cmd):
-    # Existing code...
+    """Command interpreter for HBNB."""
+
+    prompt = '(hbnb) '
+    classes = {'BaseModel': BaseModel}
 
     def do_create(self, args):
         """Create a new instance of BaseModel, save it (to the JSON file), and print the id."""

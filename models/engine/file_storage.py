@@ -2,9 +2,7 @@
 """
 Module for FileStorage class
 """
-
-# models/engine/file_storage.py
-
+import json 
 from models.base_model import BaseModel
 from models.user import User
 
@@ -43,3 +41,9 @@ class FileStorage:
                     # Add other classes as needed...
         except FileNotFoundError:
             pass
+
+    def save(self):
+        """Serializes __objects to the JSON file"""
+        with open(self.__file_path, "w") as f:
+            json_objects = {key: obj.to_dict() for key, obj in self.__objects.items()}
+            json.dump(json_objects,
