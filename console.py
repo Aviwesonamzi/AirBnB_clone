@@ -19,5 +19,11 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing on empty line input"""
         pass
 
+    def default(self, line):
+        """Handle unknown commands"""
+        if line.strip() == "":
+            return
+        print("*** Unknown syntax: {}".format(line))
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
